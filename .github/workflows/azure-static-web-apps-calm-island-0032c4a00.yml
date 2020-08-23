@@ -56,7 +56,8 @@ jobs:
         with:
           working-directory: front
           browser: chrome
-          env: baseUrl=https://calm-island-0032c4a00-${{ github.event.pull_request.number }}.eastasia.azurestaticapps.net
+          env: baseUrl=https://calm-island-0032c4a00.azurestaticapps.net
+            if [ -n "${{ github.event.pull_request.number }}" ]; then baseUrl="https://lively-sky-0c3feb303-${{ github.event.pull_request.number }}.eastasia.azurestaticapps.net" ; fi
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
