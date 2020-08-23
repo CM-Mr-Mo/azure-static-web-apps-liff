@@ -43,3 +43,26 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_CALM_ISLAND_0032C4A00 }}
           action: "close"
+
+  e2e_test_job:		
+    needs: build_and_deploy_job	
+    runs-on: ubuntu-latest
+    steps:		
+      - uses: actions/checkout@v2
+        with:
+          submodules: true      
+      - uses: cypress-io/github-action@v2
+        with:
+          working-directory: front
+          browser: chrome
+          env: baseUrl=https://calm-island-0032c4a00.azurestaticapps.net/
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: Cypress Screenshots
+          path: front/cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: Cypress Videos
+          path: front/cypress/videos
